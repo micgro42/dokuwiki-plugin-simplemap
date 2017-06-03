@@ -1,0 +1,7 @@
+base   simplemap
+author Michael Große
+email  mic.grosse@googlemail.com
+date   2017-06-03
+name   simplemap plugin
+desc   Embed a simple OpenStreetMap in your wiki
+url    https://dokuwiki,org/plugin:simplemap
