@@ -14,19 +14,19 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      * @return string Syntax mode type
      */
     public function getType() {
-        return 'FIXME: container|baseonly|formatting|substition|protected|disabled|paragraphs';
+        return 'substition';
     }
     /**
      * @return string Paragraph type
      */
     public function getPType() {
-        return 'FIXME: normal|block|stack';
+        return 'block';
     }
     /**
      * @return int Sort order - Low numbers go before high numbers
      */
     public function getSort() {
-        return FIXME;
+        return 50;
     }
 
     /**
@@ -35,13 +35,8 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      * @param string $mode Parser mode
      */
     public function connectTo($mode) {
-        $this->Lexer->addSpecialPattern('<FIXME>',$mode,'plugin_simplemap');
-//        $this->Lexer->addEntryPattern('<FIXME>',$mode,'plugin_simplemap');
+        $this->Lexer->addSpecialPattern('{{simplemap>.*?}}',$mode,'plugin_simplemap');
     }
-
-//    public function postConnect() {
-//        $this->Lexer->addExitPattern('</FIXME>','plugin_simplemap');
-//    }
 
     /**
      * Handle matches of the simplemap syntax
@@ -53,7 +48,22 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      * @return array Data for the renderer
      */
     public function handle($match, $state, $pos, Doku_Handler $handler){
-        $data = array();
+        $data = $this->parseMatch($match);
+
+        return $data;
+    }
+
+    //  {{simplemap>osm?lat=50.234&long=13.123}}
+    public function parseMatch($match) {
+        $match = substr($match, strlen('{{simplemap>'), -strlen('}}'));
+        list($type, $query) = explode('?', $match, 2);
+        $data['type'] = $type;
+
+        $data = array_reduce(explode('&', $query), function($carry, $item) {
+            list($key, $value) = explode('=', $item, 2);
+            $carry[$key] = $value;
+            return $carry;
+        }, $data);
 
         return $data;
     }
@@ -68,6 +78,16 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      */
     public function render($mode, Doku_Renderer $renderer, $data) {
         if($mode != 'xhtml') return false;
+
+        $long = $data['long'];
+        $lat = $data['lat'];
+
+        $src = 'http://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) .'%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
+        $src .= "&marker=$lat%2C$long";
+
+        $html = '<iframe width="425" height="350" src="' . $src . '"></iframe>';
+        $link = "<a href=\"https://www.openstreetmap.org/#map=14/$lat/$long\" target=\"_blank\">" . $this->getLang('view larger map') . "</a>";
+        $renderer->doc .= $html . '<br>' . $link;
 
         return true;
     }
