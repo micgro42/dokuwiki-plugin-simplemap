@@ -82,7 +82,7 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
         $long = $data['long'];
         $lat = $data['lat'];
 
-        $src = 'http://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) .'%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
+        $src = 'https://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) .'%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
         $src .= "&marker=$lat%2C$long";
 
         $html = '<iframe width="425" height="350" src="' . $src . '"></iframe>';
