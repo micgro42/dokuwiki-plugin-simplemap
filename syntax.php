@@ -7,8 +7,9 @@
  * @author  Michael Große <mic.grosse@googlemail.com>
  */
 
+use dokuwiki\Extension\SyntaxPlugin;
 
-class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin
+final class syntax_plugin_simplemap extends SyntaxPlugin
 {
     /**
      * @return string Syntax mode type

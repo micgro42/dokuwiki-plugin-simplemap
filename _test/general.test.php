@@ -1,4 +1,9 @@
 <?php
+
+namespace dokuwiki\plugin\simplemap\test;
+
+use DokuWikiTest;
+
 /**
  * General tests for the simplemap plugin
  *
