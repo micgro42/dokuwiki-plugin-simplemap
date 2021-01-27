@@ -20,6 +20,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
     {
         return 'substition';
     }
+
     /**
      * @return string Paragraph type
      */
@@ -27,6 +28,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
     {
         return 'block';
     }
+
     /**
      * @return int Sort order - Low numbers go before high numbers
      */
@@ -56,23 +58,16 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
      */
     public function handle($match, $state, $pos, Doku_Handler $handler): array
     {
-        $data = $this->parseMatch($match);
-
-        return $data;
+        return $this->parseMatch($match);
     }
 
     //  {{simplemap>osm?lat=50.234&long=13.123}}
-    public function parseMatch(string $match): array
+    private function parseMatch(string $match): array
     {
         $match = substr($match, strlen('{{simplemap>'), -strlen('}}'));
         [$type, $query] = explode('?', $match, 2);
+        parse_str($query, $data);
         $data['type'] = $type;
-
-        $data = array_reduce(explode('&', $query), function ($carry, $item) {
-            [$key, $value] = explode('=', $item, 2);
-            $carry[$key] = $value;
-            return $carry;
-        }, $data);
 
         return $data;
     }
