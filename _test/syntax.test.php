@@ -64,7 +64,7 @@ class simplemap_syntax_test extends DokuWikiTest {
         $actualStatus = $syntax->render('xhtml', $mockRenderer, $testData);
 
         self::assertTrue($actualStatus);
-        $expectedHTML = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=13.119%2C50.232%2C13.127%2C50.236&amp;layer=mapnik&marker=50.234%2C13.123"></iframe><br><a href="https://www.openstreetmap.org/#map=14/50.234/13.123" target="_blank">View Larger Map</a>';
+        $expectedHTML = '<iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=13.119%2C50.232%2C13.127%2C50.236&amp;layer=mapnik&amp;marker=50.234%2C13.123"></iframe><br><a href="https://www.openstreetmap.org/#map=14/50.234/13.123" target="_blank">View Larger Map</a>';
         self::assertSame($expectedHTML, $mockRenderer->doc);
     }
 
