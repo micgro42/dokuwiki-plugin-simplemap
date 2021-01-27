@@ -15,10 +15,10 @@ use DokuWikiTest;
  * @group plugin_simplemap
  * @group plugins
  */
-class simplemap_syntax_test extends DokuWikiTest {
+class SyntaxTest extends DokuWikiTest {
     protected $pluginsEnabled = ['simplemap'];
 
-    public static function parseMatch_testdata () {
+    public static function parseMatchTestDataProvider () {
         return [
             [
                 '{{simplemap>osm?lat=50.234&long=13.123}}',
@@ -33,25 +33,25 @@ class simplemap_syntax_test extends DokuWikiTest {
     }
 
     /**
-     * @dataProvider parseMatch_testdata
+     * @dataProvider parseMatchTestDataProvider
      *
      * @param $input
-     * @param $expected_output
+     * @param $expectedOutput
      * @param $msg
      */
-    public  function test_parseMatch($input, $expected_output, $msg) {
+    public function testParseMatch($input, $expectedOutput, $msg) {
         // arrange
         /** @var syntax_plugin_simplemap $syntax */
         $syntax = plugin_load('syntax', 'simplemap');
 
         // act
-        $actual_output = $syntax->handle($input, 5, 1, new Doku_Handler());
+        $actualOutput = $syntax->handle($input, 5, 1, new Doku_Handler());
 
         // assert
-        self::assertEquals($expected_output, $actual_output, $msg);
+        self::assertEquals($expectedOutput, $actualOutput, $msg);
     }
 
-    public function test_rendererXHTML() {
+    public function testRendererXHTML() {
         /** @var syntax_plugin_simplemap $syntax */
         $syntax = plugin_load('syntax', 'simplemap');
         $testData = [
@@ -68,7 +68,7 @@ class simplemap_syntax_test extends DokuWikiTest {
         self::assertSame($expectedHTML, $mockRenderer->doc);
     }
 
-    public function test_rendererMeta() {
+    public function testRendererMeta() {
         /** @var syntax_plugin_simplemap $syntax */
         $syntax = plugin_load('syntax', 'simplemap');
         $testData = [
