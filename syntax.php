@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DokuWiki Plugin simplemap (Syntax Component)
  *
@@ -9,23 +10,27 @@
 // must be run within Dokuwiki
 if (!defined('DOKU_INC')) die();
 
-class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
+class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin
+{
     /**
      * @return string Syntax mode type
      */
-    public function getType() {
+    public function getType()
+    {
         return 'substition';
     }
     /**
      * @return string Paragraph type
      */
-    public function getPType() {
+    public function getPType()
+    {
         return 'block';
     }
     /**
      * @return int Sort order - Low numbers go before high numbers
      */
-    public function getSort() {
+    public function getSort()
+    {
         return 50;
     }
 
@@ -34,8 +39,9 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      *
      * @param string $mode Parser mode
      */
-    public function connectTo($mode) {
-        $this->Lexer->addSpecialPattern('{{simplemap>.*?}}',$mode,'plugin_simplemap');
+    public function connectTo($mode)
+    {
+        $this->Lexer->addSpecialPattern('{{simplemap>.*?}}', $mode, 'plugin_simplemap');
     }
 
     /**
@@ -47,19 +53,21 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      * @param Doku_Handler    $handler The handler
      * @return array Data for the renderer
      */
-    public function handle($match, $state, $pos, Doku_Handler $handler){
+    public function handle($match, $state, $pos, Doku_Handler $handler)
+    {
         $data = $this->parseMatch($match);
 
         return $data;
     }
 
     //  {{simplemap>osm?lat=50.234&long=13.123}}
-    public function parseMatch($match) {
+    public function parseMatch($match)
+    {
         $match = substr($match, strlen('{{simplemap>'), -strlen('}}'));
         list($type, $query) = explode('?', $match, 2);
         $data['type'] = $type;
 
-        $data = array_reduce(explode('&', $query), function($carry, $item) {
+        $data = array_reduce(explode('&', $query), function ($carry, $item) {
             list($key, $value) = explode('=', $item, 2);
             $carry[$key] = $value;
             return $carry;
@@ -76,13 +84,14 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin {
      * @param array          $data      The data from the handler() function
      * @return bool If rendering was successful.
      */
-    public function render($mode, Doku_Renderer $renderer, $data) {
-        if($mode != 'xhtml') return false;
+    public function render($mode, Doku_Renderer $renderer, $data)
+    {
+        if ($mode != 'xhtml') return false;
 
         $long = $data['long'];
         $lat = $data['lat'];
 
-        $src = 'https://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) .'%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
+        $src = 'https://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) . '%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
         $src .= "&marker=$lat%2C$long";
 
         $html = '<iframe width="425" height="350" src="' . $src . '"></iframe>';

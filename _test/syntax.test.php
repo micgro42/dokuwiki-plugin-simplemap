@@ -1,26 +1,26 @@
 <?php
 
 /**
- * Tests for the sytax component of the simplemap plugin
+ * Tests for the syntax component of the simplemap plugin
  *
  * @group plugin_simplemap
  * @group plugins
  */
 class simplemap_syntax_test extends DokuWikiTest {
-    protected $pluginsEnabled = array('simplemap');
+    protected $pluginsEnabled = ['simplemap'];
 
     public static function parseMatch_testdata () {
-        return array(
-            array(
+        return [
+            [
                 '{{simplemap>osm?lat=50.234&long=13.123}}',
-                array(
+                [
                     'type' => 'osm1',
                     'lat' => '50.234',
                     'long' => '13.123',
-                ),
+                ],
                 'simple example'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
