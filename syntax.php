@@ -7,6 +7,8 @@
  * @author  Michael Große <mic.grosse@googlemail.com>
  */
 
+declare(strict_types=1);
+
 use dokuwiki\Extension\SyntaxPlugin;
 
 final class syntax_plugin_simplemap extends SyntaxPlugin
@@ -14,21 +16,21 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
     /**
      * @return string Syntax mode type
      */
-    public function getType()
+    public function getType(): string
     {
         return 'substition';
     }
     /**
      * @return string Paragraph type
      */
-    public function getPType()
+    public function getPType(): string
     {
         return 'block';
     }
     /**
      * @return int Sort order - Low numbers go before high numbers
      */
-    public function getSort()
+    public function getSort(): int
     {
         return 50;
     }
@@ -38,7 +40,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
      *
      * @param string $mode Parser mode
      */
-    public function connectTo($mode)
+    public function connectTo($mode): void
     {
         $this->Lexer->addSpecialPattern('{{simplemap>.*?}}', $mode, 'plugin_simplemap');
     }
@@ -52,7 +54,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
      * @param Doku_Handler    $handler The handler
      * @return array Data for the renderer
      */
-    public function handle($match, $state, $pos, Doku_Handler $handler)
+    public function handle($match, $state, $pos, Doku_Handler $handler): array
     {
         $data = $this->parseMatch($match);
 
@@ -60,7 +62,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
     }
 
     //  {{simplemap>osm?lat=50.234&long=13.123}}
-    public function parseMatch($match)
+    public function parseMatch(string $match): array
     {
         $match = substr($match, strlen('{{simplemap>'), -strlen('}}'));
         [$type, $query] = explode('?', $match, 2);
@@ -83,7 +85,7 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
      * @param array          $data      The data from the handler() function
      * @return bool If rendering was successful.
      */
-    public function render($mode, Doku_Renderer $renderer, $data)
+    public function render($mode, Doku_Renderer $renderer, $data): bool
     {
         if ($mode != 'xhtml') return false;
 
