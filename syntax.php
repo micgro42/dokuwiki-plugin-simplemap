@@ -82,17 +82,25 @@ final class syntax_plugin_simplemap extends SyntaxPlugin
      */
     public function render($mode, Doku_Renderer $renderer, $data): bool
     {
-        if ($mode != 'xhtml') return false;
+        if ($mode != 'xhtml') {
+            return false;
+        }
 
         $long = $data['long'];
         $lat = $data['lat'];
 
-        $src = 'https://www.openstreetmap.org/export/embed.html?bbox=' . ($long - 0.004) . '%2C' . ($lat - 0.002) . '%2C' . ($long + 0.004) . '%2C' . ($lat + 0.002) . '&amp;layer=mapnik';
-        $src .= "&marker=$lat%2C$long";
+        $iframeEndpoint = 'https://www.openstreetmap.org/export/embed.html';
+        $iframeQueryParams = [
+            'bbox' => ($long - 0.004) . ',' . ($lat - 0.002) . ',' . ($long + 0.004) . ',' . ($lat + 0.002),
+            'layer' => 'mapnik',
+            'marker' => "$lat,$long"
+        ];
+        $src = $iframeEndpoint . '?' . http_build_query($iframeQueryParams);
 
-        $html = '<iframe width="425" height="350" src="' . $src . '"></iframe>';
-        $link = "<a href=\"https://www.openstreetmap.org/#map=14/$lat/$long\" target=\"_blank\">" . $this->getLang('view larger map') . "</a>";
-        $renderer->doc .= $html . '<br>' . $link;
+        $iframeHtml = '<iframe width="425" height="350" src="' . $src . '"></iframe>';
+        $linkHref = "https://www.openstreetmap.org/#map=14/$lat/$long";
+        $link = "<a href=\"$linkHref\" target=\"_blank\">" . $this->getLang('view larger map') . "</a>";
+        $renderer->doc .= $iframeHtml . '<br>' . $link;
 
         return true;
     }
