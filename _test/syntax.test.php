@@ -1,5 +1,10 @@
 <?php
 
+namespace dokuwiki\plugin\simplemap\test;
+
+use syntax_plugin_simplemap;
+use DokuWikiTest;
+
 /**
  * Tests for the syntax component of the simplemap plugin
  *
