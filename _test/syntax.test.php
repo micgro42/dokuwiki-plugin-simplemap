@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace dokuwiki\plugin\simplemap\test;
 
+use Doku_Handler;
 use syntax_plugin_simplemap;
 use DokuWikiTest;
 
@@ -21,7 +22,7 @@ class simplemap_syntax_test extends DokuWikiTest {
             [
                 '{{simplemap>osm?lat=50.234&long=13.123}}',
                 [
-                    'type' => 'osm1',
+                    'type' => 'osm',
                     'lat' => '50.234',
                     'long' => '13.123',
                 ],
@@ -43,9 +44,9 @@ class simplemap_syntax_test extends DokuWikiTest {
         $syntax = plugin_load('syntax', 'simplemap');
 
         // act
-        $actual_output = $syntax->parseMatch($input);
+        $actual_output = $syntax->handle($input, 5, 1, new Doku_Handler());
 
         // assert
-        $this->assertEquals($expected_output, $actual_output, $msg);
+        self::assertEquals($expected_output, $actual_output, $msg);
     }
 }
