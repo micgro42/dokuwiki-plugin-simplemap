@@ -64,11 +64,11 @@ class syntax_plugin_simplemap extends DokuWiki_Syntax_Plugin
     public function parseMatch($match)
     {
         $match = substr($match, strlen('{{simplemap>'), -strlen('}}'));
-        list($type, $query) = explode('?', $match, 2);
+        [$type, $query] = explode('?', $match, 2);
         $data['type'] = $type;
 
         $data = array_reduce(explode('&', $query), function ($carry, $item) {
-            list($key, $value) = explode('=', $item, 2);
+            [$key, $value] = explode('=', $item, 2);
             $carry[$key] = $value;
             return $carry;
         }, $data);
